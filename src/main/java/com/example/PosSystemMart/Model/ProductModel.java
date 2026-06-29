@@ -20,5 +20,6 @@ public class ProductModel {
     private Integer barcode;
     private Double price;
     private Integer quantity;
-
+    private String productImage;
+    private Integer categoryId;
 }
