@@ -1,7 +1,7 @@
 package com.example.PosSystemMart.Controller;
 
-import com.example.PosSystemMart.Dto.ProductRequest;
-import com.example.PosSystemMart.Model.ProductModel;
+import com.example.PosSystemMart.DTO.ProductRequest;
+import com.example.PosSystemMart.DTO.ProductResponse;
 import com.example.PosSystemMart.Service.ProductService;
 import com.example.PosSystemMart.Util.APIResponse;
 import jakarta.validation.Valid;
@@ -27,9 +27,9 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<APIResponse<ProductModel>> createProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
-        ProductModel product = productService.createProduct(request);
-        APIResponse<ProductModel> response = APIResponse.<ProductModel>builder()
+    public ResponseEntity<APIResponse<ProductResponse>> createProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
+        ProductResponse product = productService.createProduct(request);
+        APIResponse<ProductResponse> response = APIResponse.<ProductResponse>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Product created successfully")
                 .data(product)
@@ -38,11 +38,11 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<APIResponse<ProductModel>> updateProduct(
+    public ResponseEntity<APIResponse<ProductResponse>> updateProduct(
             @PathVariable Long id,
             @ModelAttribute @Valid ProductRequest request) throws IOException {
-        ProductModel product = productService.updateProduct(id, request);
-        APIResponse<ProductModel> response = APIResponse.<ProductModel>builder()
+        ProductResponse product = productService.updateProduct(id, request);
+        APIResponse<ProductResponse> response = APIResponse.<ProductResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Product updated successfully")
                 .data(product)
@@ -51,9 +51,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<APIResponse<List<ProductModel>>> getAllProducts() {
-        List<ProductModel> products = productService.getAllProducts();
-        APIResponse<List<ProductModel>> response = APIResponse.<List<ProductModel>>builder()
+    public ResponseEntity<APIResponse<List<ProductResponse>>> getAllProducts() {
+        List<ProductResponse> products = productService.getAllProducts();
+        APIResponse<List<ProductResponse>> response = APIResponse.<List<ProductResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Products retrieved successfully")
                 .data(products)
@@ -62,9 +62,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<ProductModel>> getProductById(@PathVariable Long id) {
-        ProductModel product = productService.getProductById(id);
-        APIResponse<ProductModel> response = APIResponse.<ProductModel>builder()
+    public ResponseEntity<APIResponse<ProductResponse>> getProductById(@PathVariable Long id) {
+        ProductResponse product = productService.getProductById(id);
+        APIResponse<ProductResponse> response = APIResponse.<ProductResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Product retrieved successfully")
                 .data(product)

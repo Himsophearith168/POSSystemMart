@@ -1,14 +1,14 @@
 package com.example.PosSystemMart.Service;
 
-import com.example.PosSystemMart.Dto.ProductRequest;
-import com.example.PosSystemMart.Model.ProductModel;
+import com.example.PosSystemMart.DTO.ProductRequest;
+import com.example.PosSystemMart.DTO.ProductResponse;
 import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
-    ProductModel createProduct(ProductRequest request) throws IOException;
-    ProductModel updateProduct(Long id, ProductRequest request) throws IOException;
-    List<ProductModel> getAllProducts();
-    ProductModel getProductById(Long id);
+    ProductResponse createProduct(ProductRequest request) throws IOException;
+    ProductResponse updateProduct(Long id, ProductRequest request) throws IOException;
+    List<ProductResponse> getAllProducts();
+    ProductResponse getProductById(Long id);
     void deleteProduct(Long id) throws IOException;
 }

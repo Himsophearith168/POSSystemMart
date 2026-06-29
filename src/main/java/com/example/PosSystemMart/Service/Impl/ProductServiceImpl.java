@@ -1,7 +1,9 @@
 package com.example.PosSystemMart.Service.Impl;
 
-import com.example.PosSystemMart.Dto.ProductRequest;
+import com.example.PosSystemMart.DTO.ProductRequest;
+import com.example.PosSystemMart.DTO.ProductResponse;
 import com.example.PosSystemMart.Exception.ResourceNotFoundException;
+import com.example.PosSystemMart.Mapper.ProductMapper;
 import com.example.PosSystemMart.Model.ProductModel;
 import com.example.PosSystemMart.Repository.ProductRepository;
 import com.example.PosSystemMart.Service.ProductService;
@@ -36,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductModel createProduct(ProductRequest request) throws IOException {
+    public ProductResponse createProduct(ProductRequest request) throws IOException {
         if (productRepository.existsByBarcode(request.getBarcode())) {
             throw new IllegalArgumentException("Product with barcode " + request.getBarcode() + " already exists.");
         }
@@ -46,21 +48,13 @@ public class ProductServiceImpl implements ProductService {
             imageName = saveImage(request.getImage());
         }
 
-        ProductModel product = ProductModel.builder()
-                .productName(request.getProductName())
-                .productDescription(request.getProductDescription())
-                .barcode(request.getBarcode())
-                .price(request.getPrice())
-                .quantity(request.getQuantity())
-                .categoryId(request.getCategoryId())
-                .productImage(imageName)
-                .build();
-
-        return productRepository.save(product);
+        ProductModel product = ProductMapper.toEntity(request, imageName);
+        ProductModel savedProduct = productRepository.save(product);
+        return ProductMapper.toResponse(savedProduct);
     }
 
     @Override
-    public ProductModel updateProduct(Long id, ProductRequest request) throws IOException {
+    public ProductResponse updateProduct(Long id, ProductRequest request) throws IOException {
         ProductModel existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
@@ -76,6 +70,8 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setPrice(request.getPrice());
         existingProduct.setQuantity(request.getQuantity());
         existingProduct.setCategoryId(request.getCategoryId());
+        existingProduct.setStockId(request.getStockId());
+        existingProduct.setBrandId(request.getBrandId());
 
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             // Delete old image
@@ -85,18 +81,23 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setProductImage(imageName);
         }
 
-        return productRepository.save(existingProduct);
+        ProductModel savedProduct = productRepository.save(existingProduct);
+        return ProductMapper.toResponse(savedProduct);
     }
 
     @Override
-    public List<ProductModel> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        List<ProductModel> products = productRepository.findAll();
+        return products.stream()
+                .map(ProductMapper::toResponse)
+                .toList();
     }
 
     @Override
-    public ProductModel getProductById(Long id) {
-        return productRepository.findById(id)
+    public ProductResponse getProductById(Long id) {
+        ProductModel product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+        return ProductMapper.toResponse(product);
     }
 
     @Override

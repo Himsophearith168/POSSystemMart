@@ -1,4 +1,4 @@
-package com.example.PosSystemMart.Dto;
+package com.example.PosSystemMart.DTO;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -27,6 +27,10 @@ public class ProductRequest {
 
     @NotNull(message = "Category ID is required")
     private Integer categoryId;
+    @NotNull(message = "Stock ID is required")
+    private Integer stockId;
+    @NotNull(message = "Brand ID is required")
+    private Integer brandId;
 
     private MultipartFile image;
 }
