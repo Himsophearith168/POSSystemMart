@@ -1,5 +1,8 @@
 package com.example.PosSystemMart.DTO;
 
+import com.example.PosSystemMart.Model.BrandModel;
+import com.example.PosSystemMart.Model.CategoryModel;
+import com.example.PosSystemMart.Model.StockModel;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,11 +29,11 @@ public class ProductRequest {
     private Integer quantity;
 
     @NotNull(message = "Category ID is required")
-    private Integer categoryId;
+    private CategoryModel categoryId;
     @NotNull(message = "Stock ID is required")
-    private Integer stockId;
+    private StockModel stockId;
     @NotNull(message = "Brand ID is required")
-    private Integer brandId;
+    private BrandModel brandId;
 
     private MultipartFile image;
 }

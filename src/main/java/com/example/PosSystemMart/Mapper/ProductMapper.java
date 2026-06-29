@@ -35,9 +35,9 @@ public class ProductMapper {
                 .price(model.getPrice())
                 .quantity(model.getQuantity())
                 .productImage(model.getProductImage())
-                .categoryId(model.getCategoryId())
-                .stockId(model.getStockId())
-                .brandId(model.getBrandId())
+                .categoryId(model.getCategoryId() != null ? model.getCategoryId().getId() : null)
+                .stockId(model.getStockId() != null ? model.getStockId().getId() : null)
+                .brandId(model.getBrandId() != null ? model.getBrandId().getId() : null)
                 .build();
     }
 }

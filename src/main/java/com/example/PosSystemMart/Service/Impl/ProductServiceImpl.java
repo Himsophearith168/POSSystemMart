@@ -57,8 +57,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(Long id, ProductRequest request) throws IOException {
         ProductModel existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
-
-        // Check barcode uniqueness if changed
         if (!existingProduct.getBarcode().equals(request.getBarcode()) && 
             productRepository.existsByBarcode(request.getBarcode())) {
             throw new IllegalArgumentException("Product with barcode " + request.getBarcode() + " already exists.");
@@ -74,9 +72,7 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setBrandId(request.getBrandId());
 
         if (request.getImage() != null && !request.getImage().isEmpty()) {
-            // Delete old image
             deleteOldImage(existingProduct.getProductImage());
-            // Save new image
             String imageName = saveImage(request.getImage());
             existingProduct.setProductImage(imageName);
         }
@@ -121,7 +117,6 @@ public class ProductServiceImpl implements ProductService {
                 Path filePath = this.root.resolve(fileName);
                 Files.deleteIfExists(filePath);
             } catch (IOException e) {
-                // Log warning but don't fail transaction
                 System.err.println("Failed to delete image: " + fileName + ". Error: " + e.getMessage());
             }
         }

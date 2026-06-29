@@ -17,7 +17,7 @@ public class ProductResponse {
     private Double price;
     private Integer quantity;
     private String productImage;
-    private Integer categoryId;
-    private Integer stockId;
-    private Integer brandId;
+    private Long categoryId;
+    private Long stockId;
+    private Long brandId;
 }

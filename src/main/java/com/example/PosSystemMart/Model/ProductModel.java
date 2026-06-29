@@ -26,11 +26,14 @@ public class ProductModel {
     private Integer quantity;
     @Column(nullable = false)
     private String productImage;
-    @Column(nullable = false, unique = true)
-    private Integer categoryId;
-    @Column(nullable = false, unique = true)
-    private Integer stockId;
-    @Column(nullable = false, unique = true)
-    private Integer brandId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false, unique = true)
+    private CategoryModel categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id", nullable = false, unique = true)
+    private StockModel stockId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false, unique = true)
+    private BrandModel brandId;
 
 }
