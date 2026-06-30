@@ -1,18 +1,15 @@
 package com.example.PosSystemMart.DTO;
 
-
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class BrandRequest {
-    @NotNull(message = "Brand Name is Require")
+    @NotBlank(message = "Brand name is required")
     private String brandName;
+
     private String brandDescription;
 }

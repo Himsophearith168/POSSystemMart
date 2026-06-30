@@ -3,26 +3,27 @@ package com.example.PosSystemMart.Mapper;
 import com.example.PosSystemMart.DTO.BrandRequest;
 import com.example.PosSystemMart.DTO.BrandResponse;
 import com.example.PosSystemMart.Model.BrandModel;
-import org.springframework.stereotype.Component;
 
-@Component
 public class BrandMapper {
-    public BrandModel toEntity(BrandRequest dto) {
-        if (dto == null) {
+
+    public static BrandModel toEntity(BrandRequest request) {
+        if (request == null) {
             return null;
         }
         return BrandModel.builder()
-                .brandName(dto.getBrandName())
-                .brandDescription(dto.getBrandDescription())
+                .brandName(request.getBrandName())
+                .brandDescription(request.getBrandDescription())
                 .build();
     }
-    public BrandResponse toResponse(BrandModel dto) {
-        if (dto == null) {
+
+    public static BrandResponse toResponse(BrandModel model) {
+        if (model == null) {
             return null;
         }
-        BrandResponse response = new BrandResponse();
-        response.setBrandName(dto.getBrandName());
-        response.setBrandDescription(dto.getBrandDescription());
-        return response;
+        return BrandResponse.builder()
+                .id(model.getId())
+                .brandName(model.getBrandName())
+                .brandDescription(model.getBrandDescription())
+                .build();
     }
 }
