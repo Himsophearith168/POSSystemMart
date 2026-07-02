@@ -1,7 +1,40 @@
 package com.example.PosSystemMart.Service.Impl;
 
+import com.example.PosSystemMart.DTO.CategoryRequest;
+import com.example.PosSystemMart.DTO.CategoryResponse;
+import com.example.PosSystemMart.Mapper.CategoryMapper;
+import com.example.PosSystemMart.Model.CategoryModel;
+import com.example.PosSystemMart.Repository.BrandRepository;
+import com.example.PosSystemMart.Repository.CategoryRepository;
+import com.example.PosSystemMart.Service.CategoryService;
+import org.hibernate.annotations.Audited;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class CategoryServicelmpl {
+public class CategoryServicelmpl implements CategoryService {
+    private final CategoryRepository categoryRepository;
+
+    @Autowired
+    public CategoryServicelmpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public CategoryResponse createCategory(CategoryRequest request){
+        if (categoryRepository.existsByCategoryName(request.getCategoryName())) {
+            throw new IllegalArgumentException("Category with name " + request.getCategoryName() + " already exists.");
+        }
+        CategoryModel category = CategoryMapper.toEntity(request);
+        categoryRepository.save(category);
+        return CategoryMapper.toResponse(category);
+    }
+    @Override
+    public List<CategoryResponse> getAllCategory(){
+        List<CategoryModel> categoryList = categoryRepository.findAll();
+        return categoryList.stream().map(CategoryMapper::toResponse).collect(Collectors.toList());
+    }
+
 }
