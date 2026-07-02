@@ -31,6 +31,20 @@ public class CategoryServicelmpl implements CategoryService {
         categoryRepository.save(category);
         return CategoryMapper.toResponse(category);
     }
+
+    @Override
+    public CategoryResponse updateCategory(Long id,CategoryRequest request){
+        CategoryModel existingCategory = categoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Category with id " + id + " does not exists."));
+        if (categoryRepository.existsByCategoryName(request.getCategoryName())) {
+            throw new IllegalArgumentException("Category with name " + request.getCategoryName() + " already exists.");
+        }
+        existingCategory.setCategoryName(request.getCategoryName());
+        existingCategory.setCategoryDescription(request.getCategoryDescription());
+        categoryRepository.save(existingCategory);
+        return CategoryMapper.toResponse(existingCategory);
+
+    }
+
     @Override
     public List<CategoryResponse> getAllCategory(){
         List<CategoryModel> categoryList = categoryRepository.findAll();
