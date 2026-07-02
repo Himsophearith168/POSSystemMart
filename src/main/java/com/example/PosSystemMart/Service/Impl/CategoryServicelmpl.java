@@ -50,5 +50,16 @@ public class CategoryServicelmpl implements CategoryService {
         List<CategoryModel> categoryList = categoryRepository.findAll();
         return categoryList.stream().map(CategoryMapper::toResponse).collect(Collectors.toList());
     }
+    @Override
+    public CategoryResponse getCategoryByID (Long id){
+        CategoryModel category = categoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Category with id " + id + " does not exists."));
+        return CategoryMapper.toResponse(category);
+    }
+
+    @Override
+    public CategoryResponse deleteCategory(Long id){
+        categoryRepository.deleteById(id);
+        return null;
+    }
 
 }

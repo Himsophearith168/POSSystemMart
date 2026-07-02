@@ -42,6 +42,16 @@ public class CategoryController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse<CategoryResponse>> getCategoryByID(@PathVariable Long id){
+        CategoryResponse categoryResponse = categoryService.getCategoryByID(id);
+        APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("You Retrive Category Succeffully")
+                .data(categoryResponse)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request){
         CategoryResponse categoryResponse = categoryService.updateCategory(id,request);
@@ -49,6 +59,15 @@ public class CategoryController {
                 .status(HttpStatus.OK.value())
                 .message("Update category Successfully")
                 .data(categoryResponse)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse<CategoryResponse>> deleteCategory(@PathVariable Long id){
+        CategoryResponse categoryResponse = categoryService.deleteCategory(id);
+        APIResponse<CategoryResponse> response = APIResponse.<CategoryResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("You Delete Successfully")
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
