@@ -4,6 +4,7 @@ import com.example.PosSystemMart.DTO.CategoryRequest;
 import com.example.PosSystemMart.DTO.CategoryResponse;
 import com.example.PosSystemMart.Service.CategoryService;
 import com.example.PosSystemMart.Util.APIResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<APIResponse<CategoryResponse>> createCategory(@RequestBody CategoryRequest request){
+    public ResponseEntity<APIResponse<CategoryResponse>> createCategory(@RequestBody @Valid CategoryRequest request){
         CategoryResponse categoryResponse = categoryService.createCategory(request);
         APIResponse<CategoryResponse> apiResponse = APIResponse.<CategoryResponse>builder()
                 .status(HttpStatus.CREATED.value())
@@ -53,7 +54,7 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request){
+    public ResponseEntity<APIResponse<CategoryResponse>> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryRequest request){
         CategoryResponse categoryResponse = categoryService.updateCategory(id,request);
         APIResponse<CategoryResponse> response  = APIResponse.<CategoryResponse>builder()
                 .status(HttpStatus.OK.value())
