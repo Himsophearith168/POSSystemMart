@@ -11,4 +11,6 @@ public interface ProductService {
     List<ProductResponse> getAllProducts();
     ProductResponse getProductById(Long id);
     void deleteProduct(Long id) throws IOException;
+    List<ProductResponse> filterProducts(String name, Long categoryId, Long brandId, Long stockId, Double minPrice, Double maxPrice);
 }
+

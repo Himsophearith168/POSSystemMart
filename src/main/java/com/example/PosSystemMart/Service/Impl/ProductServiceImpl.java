@@ -6,8 +6,10 @@ import com.example.PosSystemMart.Exception.ResourceNotFoundException;
 import com.example.PosSystemMart.Mapper.ProductMapper;
 import com.example.PosSystemMart.Model.ProductModel;
 import com.example.PosSystemMart.Repository.ProductRepository;
+import com.example.PosSystemMart.Repository.ProductSpecification;
 import com.example.PosSystemMart.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -102,6 +104,23 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
         deleteOldImage(product.getProductImage());
         productRepository.delete(product);
+    }
+
+    @Override
+    public List<ProductResponse> filterProducts(String name, Long categoryId, Long brandId,
+                                                Long stockId, Double minPrice, Double maxPrice) {
+        Specification<ProductModel> spec = Specification
+                .where(ProductSpecification.hasName(name))
+                .and(ProductSpecification.hasCategoryId(categoryId))
+                .and(ProductSpecification.hasBrandId(brandId))
+                .and(ProductSpecification.hasStockId(stockId))
+                .and(ProductSpecification.hasPriceGreaterThanOrEqual(minPrice))
+                .and(ProductSpecification.hasPriceLessThanOrEqual(maxPrice));
+
+        return productRepository.findAll(spec)
+                .stream()
+                .map(ProductMapper::toResponse)
+                .toList();
     }
 
     private String saveImage(MultipartFile file) throws IOException {

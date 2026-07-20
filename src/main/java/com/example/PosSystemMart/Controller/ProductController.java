@@ -61,6 +61,23 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<APIResponse<List<ProductResponse>>> filterProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long brandId,
+            @RequestParam(required = false) Long stockId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+        List<ProductResponse> products = productService.filterProducts(name, categoryId, brandId, stockId, minPrice, maxPrice);
+        APIResponse<List<ProductResponse>> response = APIResponse.<List<ProductResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Products filtered successfully")
+                .data(products)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse<ProductResponse>> getProductById(@PathVariable Long id) {
         ProductResponse product = productService.getProductById(id);
